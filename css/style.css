@@ -10,7 +10,7 @@
     font-weight: bold;
 }
 
-body{
+:root {
     /* Color theme definitions */
     --textColor: #222;
     --textColorInverted: #EEE;
@@ -18,7 +18,9 @@ body{
     --backgroundColorInverted: #222;
     --primaryColor: #34e261;
     --linkColor: #33b158;
+}
 
+body{
     font-family: "Work Sans", sans-serif;
     background-color: var(--backgroundColor);
     color: var(--textColor);
@@ -30,12 +32,24 @@ a {
     text-decoration: none;
 }
 
+a:hover {
+    text-decoration: underline;
+}
+
 h1 {
     color: var(--linkColor);
 }
 
 .center_block {
     text-align: center;
+}
+
+.horizontal_list {
+    list-style-type: none;
+}
+
+.horizontal_list li {
+    display: inline;
 }
 
 /* Canvas styling. */
