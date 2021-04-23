@@ -3,7 +3,10 @@ const c = canvas.getContext("2d");
 
 function resizeCanvas() {
 	c.canvas.width = window.innerWidth;
-	c.canvas.height = window.innerHeight;
+	c.canvas.height = document.documentElement.scrollHeight;
+	var body = document.body, html = document.documentElement;
+	var height = Math.max(body.scrollHeight, body.offsetHeight, html.clientHeight, html.scrollHeight, html.offsetHeight);
+	c.canvas.height = height;
 	updateCanvas();
 }
 

@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Projects</title>
+	<meta charset="utf-8"/>
+	<meta name="description" content="Projects page for Andrew Lalis' personal site."/>
+	<meta name="robots" content="index, follow"/>
+	<link rel="stylesheet" href="../css/style.css" type="text/css"/>
+	<link rel="stylesheet" href="../css/projects.css" type="text/css"/>
+	<link rel="stylesheet" href="../css/prism.css" type="text/css"/>
+	<!-- Global site tag (gtag.js) - Google Analytics -->
+	<script async src="https://www.googletagmanager.com/gtag/js?id=G-9FCS7NBL3E"></script>
+	<script>
+		window.dataLayer = window.dataLayer || [];
+		function gtag(){dataLayer.push(arguments);}
+		gtag('js', new Date());
+		gtag('config', 'G-9FCS7NBL3E');
+	</script>
+</head>
+<body>
+<div class="center_block">
+	<h1>Andrew's Projects</h1>
+	<p>
+		On this page you'll find some information about interesting projects I've worked on.
+	</p>
+	<nav>
+		<ul class="horizontal_list">
+			<li><a href="../index.html">Back to Homepage</a></li>
+		</ul>
+	</nav>
+	<article class="project_container">
+		<section>
+			<h2>Intelligent Minecart Routing</h2>
+			<iframe width="560" height="315" src="https://www.youtube.com/embed/PqpksOT6AK4" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+			<p>
+				While experimenting with sending data via chest-minecarts in Minecraft, I discovered a method that can be used to route traffic through a network of binary switches. This allows for the creation of large networks of rails that can be traversed entirely automatically, by sending a data cart ahead of a player's own cart. The data cart contains one bit of data for each switch it must pass on its journey.
+			</p>
+			<p>
+				<a class="link_external" href="https://youtu.be/VfLPSq4rvN8">Watch the tutorial to learn how to build this in your world!</a>
+			</p>
+		</section>
+		<section>
+			<h2>Simply Scheduled</h2>
+			<pre><code class="language-java">Runnable job = () -> System.out.println("Doing some work...");
+Schedule schedule = new RepeatingSchedule(ChronoUnit.SECONDS, 5);
+Scheduler scheduler = new BasicScheduler();
+scheduler.add(new Task(job, schedule));
+scheduler.start();</code></pre>
+			<p>
+				Inspired by scheduling systems like <a href="http://www.quartz-scheduler.org/">Quartz</a>, I came up with my own minimalistic scheduling system, whose behavior is loosely based on that of CRON tasks. This scheduling API offers an extremely simple and yet extensible interface for scheduling tasks to run consistently at specific times or in certain intervals.
+			</p>
+			<p>
+				<a class="link_external" href="https://github.com/andrewlalis/SimplyScheduled">Check out the source code on GitHub here!</a>
+			</p>
+		</section>
+		<section>
+			<h2>Entity-Relation Mapping Editor</h2>
+			<p>
+				During my time as a teaching assistant for my university's <em>Introduction to Information Systems</em> course, I developed an application that would specifically help students generate entity-relation mappings, as part of their journey from entity-relational models to a full relational database schema.
+			</p>
+			<p>
+				This application provides an interface where a relation diagram can be created, with attributes that may reference the attributes of other relations. Diagrams can easily be exported to images for use in homeworks or for sharing with those who don't have the program, and the diagram files can be saved and loaded as well.
+			</p>
+			<p>
+				<a class="link_external" href="https://github.com/andrewlalis/EntityRelationMappingEditor">Check it out and download it on GitHub here!</a>
+			</p>
+		</section>
+		<section>
+			<h2>Minecraft Printing Press</h2>
+			<iframe width="560" height="315" src="https://www.youtube.com/embed/Mu7Hv1na7Sw" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+			<p>
+				A simple Java-Swing application that uses native hooks to automate the process of formatting and pasting large texts into Minecraft's written books.
+			</p>
+		</section>
+		<section>
+			<h2>Insights - A Discord Bot</h2>
+			<img width="560" src="../img/projects/insights-messages-graph.png" alt="Insights bot messages graph"/>
+			<p>
+				As part of the <a class="link_external" href="https://javadiscord.net/">Java Discord</a> server, I created a bot which tracks user activity metrics daily, and produces some nice visualizations of the results. By using some clever caching techniques, the bot can handle massive amounts of activity with ease, performing only a fixed number of database queries once at midnight for each guild it participates in, and in normal operation it's rare to see its memory usage exceed 200MB.
+			</p>
+			<p>
+				<a class="link_external" href="https://github.com/Java-Discord/InsightsBot">Check it out on GitHub here!</a>
+			</p>
+		</section>
+		<section>
+			<h2>Loading System for Immersive Railroading</h2>
+			<iframe width="560" height="315" src="https://www.youtube.com/embed/L72lY4vzDWY" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+			<p>
+				The <em>LoadMaster™</em> is a system I developed to automatically load and unload large trains from the Immersive Railroading mod for Minecraft. This system uses a set of distributed loader/unloader modules that are orchestrated by a master server. The master server also serves as the user's point of contact, since it provides a nice GUI from which the individual modules can be controlled one-by-one, or as a group.
+			</p>
+			<p>
+				To install this system in your world, you should first watch the <a class="link_external" href="https://youtu.be/L72lY4vzDWY?t=170">tutorial</a> that covers building the infrastructure. Then you can simply install the script to both the master controller and the loader modules using <code>pastebin run LgJr66gm</code>.
+			</p>
+		</section>
+	</article>
+</div>
+<script src="../js/consent.js"></script>
+<script src="../js/prism.js"></script>
+</body>
+</html>

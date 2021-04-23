@@ -1,0 +1,14 @@
+.project_container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    column-gap: 1em;
+    row-gap: 1em;
+}
+
+.project_container section {
+    padding: 0 3em;
+}
+
+.project_container section p {
+    text-align: left;
+}

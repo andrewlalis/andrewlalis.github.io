@@ -3,6 +3,8 @@ const SKY_DAWN = [255, 149, 145];
 const SKY_DAY = [255, 255, 230];
 const SKY_DUSK = [255, 177, 33];
 
+const SUN_COLOR = "#ffc400";
+
 function draw(c, w, h, t) {
 	drawSky(c, w, h, t);
 	drawSun(c, w, h, t);
@@ -10,7 +12,6 @@ function draw(c, w, h, t) {
 }
 
 function drawSun(c, w, h, t) {
-	let date = new Date();
 	let theta = t * 2 * Math.PI + Math.PI - (Math.PI / 2);
 	let rX = 0.95 * (w / 2);
 	let rY = 0.90 * (h);
@@ -20,8 +21,14 @@ function drawSun(c, w, h, t) {
 	if (sunY - size > h) {
 		return;
 	}
-	c.fillStyle = "#ffc400";
+
 	c.beginPath();
+	let g = c.createRadialGradient(sunX, sunY, size / 2, sunX, sunY, size);
+	g.addColorStop(0, SUN_COLOR);
+	g.addColorStop(1, "rgba(255, 196, 0, 0)");
+	c.fillStyle = g;
+
+
 	c.arc(sunX, sunY, size, 0, 2 * Math.PI, false);
 	c.fill();
 
