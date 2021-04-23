@@ -1,0 +1,42 @@
+.articles_list {
+    max-width: 50%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.articles_list ul {
+    list-style-type: none;
+}
+
+article {
+    max-width: 40%;
+    margin-left: auto;
+    margin-right: auto;
+    font-size: 1em;
+    line-height: 1.8em;
+    background-color: #fffbf2;
+    padding: 1em 3em;
+}
+
+article a {
+    color: #666;
+}
+
+article section + section {
+    margin-top: 3em;
+}
+
+@media only screen and (max-width: 1200px) {
+    .articles_list {
+        max-width: 100%;
+    }
+    .articles_list ul {
+        font-size: 5em;
+    }
+
+    article {
+        max-width: 100%;
+        font-size: 3em;
+        padding: 1em 1em;
+    }
+}

@@ -51,11 +51,16 @@ h1 {
 
 .horizontal_list {
     list-style-type: none;
+    padding: 0;
 }
 
 .horizontal_list li {
     display: inline;
+    margin-left: 1em;
+    margin-right: 1em;
 }
+
+
 
 /* Canvas styling. */
 .background_canvas {
@@ -68,6 +73,7 @@ h1 {
     margin: 0;
     padding: 0;
 }
+
 
 /* Cookie consent styling. */
 @keyframes consent_animation {
