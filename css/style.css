@@ -1,0 +1,84 @@
+@font-face {
+    font-family: Work Sans;
+    src: url("../font/WorkSans-Regular.ttf");
+    font-weight: normal;
+}
+
+@font-face {
+    font-family: Work Sans;
+    src: url("../font/WorkSans-Bold.ttf");
+    font-weight: bold;
+}
+
+body{
+    /* Color theme definitions */
+    --textColor: #222;
+    --textColorInverted: #EEE;
+    --backgroundColor: #EEE;
+    --backgroundColorInverted: #222;
+    --primaryColor: #34e261;
+    --linkColor: #33b158;
+
+    font-family: "Work Sans", sans-serif;
+    background-color: var(--backgroundColor);
+    color: var(--textColor);
+    font-size: 1em;
+}
+
+a {
+    color: var(--linkColor);
+    text-decoration: none;
+}
+
+h1 {
+    color: var(--linkColor);
+}
+
+.center_block {
+    text-align: center;
+}
+
+/* Canvas styling. */
+.background_canvas {
+    z-index: -99999;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    bottom: 0;
+    margin: 0;
+    padding: 0;
+}
+
+/* Cookie consent styling. */
+@keyframes consent_animation {
+    0% {
+        bottom: -5em;
+    }
+    100% {
+        bottom: 0;
+    }
+}
+
+.cookie_consent {
+    position: fixed;
+    width: 90%;
+    padding: 2em 5%;
+    left: 0;
+    bottom: 0;
+    background-color: var(--backgroundColorInverted);
+    color: var(--textColorInverted);
+    text-align: center;
+    z-index: 99999;
+
+    animation-name: consent_animation;
+    animation-direction: normal;
+    animation-timing-function: ease-out;
+    animation-duration: 0.75s;
+}
+
+.cookie_consent a {
+    color: var(--primaryColor);
+    text-decoration: underline;
+    font-weight: bold;
+}
