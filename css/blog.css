@@ -6,6 +6,7 @@
 
 .articles_list ul {
     list-style-type: none;
+    padding: 0;
 }
 
 article {
@@ -23,7 +24,17 @@ article a {
 }
 
 article section + section {
-    margin-top: 3em;
+    margin-top: 2em;
+}
+
+section {
+    padding-bottom: 1em;
+    border-bottom: 1px solid #999;
+}
+
+section:last-of-type {
+    padding-bottom: 0;
+    border-bottom: none;
 }
 
 @media only screen and (max-width: 1200px) {

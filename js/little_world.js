@@ -12,7 +12,7 @@ function draw(c, w, h, t) {
 }
 
 function drawSun(c, w, h, t) {
-	let theta = t * 2 * Math.PI + Math.PI - (Math.PI / 2);
+	let theta = t * 2 * Math.PI + (Math.PI / 2);
 	let rX = 0.95 * (w / 2);
 	let rY = 0.90 * (h);
 	let size = 0.05 * ((w + h) / 2);

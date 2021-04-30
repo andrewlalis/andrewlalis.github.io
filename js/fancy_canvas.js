@@ -5,8 +5,7 @@ function resizeCanvas() {
 	c.canvas.width = window.innerWidth;
 	c.canvas.height = document.documentElement.scrollHeight;
 	var body = document.body, html = document.documentElement;
-	var height = Math.max(body.scrollHeight, body.offsetHeight, html.clientHeight, html.scrollHeight, html.offsetHeight);
-	c.canvas.height = height;
+	c.canvas.height = Math.max(body.scrollHeight, body.offsetHeight, html.clientHeight, html.scrollHeight, html.offsetHeight);
 	updateCanvas();
 }
 
@@ -35,7 +34,7 @@ window.setInterval(() => {
 	updateObjects(c, (now - lastUpdate) / 1000);
 	updateCanvas();
 	lastUpdate = now;
-}, 100);
+}, 1000);
 
 /* Utility methods */
 function randRange(min, max) {

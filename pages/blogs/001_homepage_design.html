@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Homepage Design</title>
+	<meta charset="utf-8"/>
+	<meta name="description" content="TEMPLATE DESCRIPTION"/>
+	<link rel="stylesheet" href="../../css/style.css" type="text/css"/>
+	<link rel="stylesheet" href="../../css/prism.css" type="text/css"/>
+	<link rel="stylesheet" href="../../css/blog.css" type="text/css"/>
+	<!-- Global site tag (gtag.js) - Google Analytics -->
+	<script async src="https://www.googletagmanager.com/gtag/js?id=G-9FCS7NBL3E"></script>
+	<script>
+		window.dataLayer = window.dataLayer || [];
+		function gtag(){dataLayer.push(arguments);}
+		gtag('js', new Date());
+		gtag('config', 'G-9FCS7NBL3E');
+	</script>
+</head>
+<body>
+<header class="center_block">
+	<h1>Dev Discussions</h1>
+	<nav>
+		<ul class="horizontal_list">
+			<li><a href="../../index.html">Back to Homepage</a></li>
+		</ul>
+	</nav>
+</header>
+
+<article>
+	<header>
+		<h2>How I Designed My Homepage</h2>
+		<p>
+			<em>Written on <time>30 April, 2021</time>, by Andrew Lalis.</em>
+		</p>
+	</header>
+	<section>
+		<p>
+			Maybe you've noticed that my homepage seems a little plain; that it's just a simple color gradient with a yellow sun floating around precariously. Well actually, the website has a plain white background, and the sky / sun combo are added later with some Javascript, which puts the sun into a specific position according to the time of day, and changes the color of the sky to match. Don't believe me? Visit <a href="https://andrewlalis.github.io">andrewlalis.github.io</a> at night to see how things change.
+		</p>
+	</section>
+	<section>
+		<h3>The Vision</h3>
+		<p>
+			I started with the idea: <em>"I want my website to look like the sky."</em> Of course the first thing I did was make the background a simple color gradient from sky-blue to white, which had the obvious effect of turning my page into a time capsule from the early 2000's. To make things more interesting, I wanted to display the position of the sun in my sky, according to the time of day. And finally, I wanted to emulate the vivid colors of dawn and dusk.
+		</p>
+	</section>
+	<section>
+		<h3>A Basis in Math</h3>
+		<p>
+			There are two main problems to solve to achieve my vision: computing the sun's position using the current time, and computing the sky color using the current time. As you can see, both of these calculations will be time-dependent, so I right away made a simple function to call some sort of <code>draw</code> function using a floating-point time value <code>t</code> between 0 and 1 (with 0 being midnight, dawn at 0.25, noon at 0.5, etc.)
+		</p>
+		<figure>
+			<pre><code class="language-javascript">
+				function updateCanvas() {
+					let w = c.canvas.width;
+					let h = c.canvas.height;
+					let date = new Date();
+					let secondsInADay = 60 * 60 * 24;
+					let secondsPassed = date.getHours() * 60 * 60 + date.getMinutes() * 60 + date.getSeconds();
+					let t = secondsPassed / secondsInADay;
+					c.clearRect(0, 0, w, h);
+					draw(c, w, h, t);
+				}
+			</code></pre>
+			<figcaption>This function updates the homepage's canvas and computes the current time. Note that <code>c</code> is our canvas' 2D rendering context. Notice also that for each time that I draw, I get the canvas' dimensions, and clear it first, so that this will work fine even if the user resizes their browser window.</figcaption>
+		</figure>
+		<p>
+			So now all we need to do is write an implementation of the <code>draw</code> function.
+			<pre><code class="language-javascript">
+				function draw(context, canvasWidth, canvasHeight, time) {
+					// Render stuff here!
+				}
+			</code></pre>
+		</p>
+	</section>
+
+	<section>
+		<h3>Sun Position</h3>
+		<p>
+			The sun's position will be modeled as a simple circular path, which means that the consine function will tell us its x-coordinate for a given angle, and the sine function will tell us its y-coordinate.
+		</p>
+		<figure>
+			<img src="../../img/blogs/001/sun_time.png" alt="sun-time diagram"/>
+			<img src="../../img/blogs/001/sun_theta.png" alt="sun-theta diagram"/>
+			<figcaption>As you can see in the diagrams, we just need to find a way to turn <code>t</code> into an angle <code>θ</code>.</figcaption>
+		</figure>
+		<p>
+			Luckily, in the canvas coordinate system, the y-axis is reversed from the normal cartesian system, so moving downward means increasing the y-coordinate. This is useful because normally, if I want the sun to rise on the left and set on the right, that would mean using a negative angle, to move the opposite direction around the circle. Because it's reversed, we can simply calculate the angle like so:
+		</p>
+		<pre><code class="language-javascript">let theta = t * 2 * Math.PI + (Math.PI / 2);</code></pre>
+		<p>
+			This says that the sun's angle is just some fraction <code>t</code> of the way to a full rotation of 2 pi, offset by a quarter turn so that the sun is placed at the bottom during midnight, instead of at the right like a normal sin/cosine function would. To put it all into action, here is the full logic for drawing the sun at a given time:
+		</p>
+		<figure>
+			<pre><code class="language-javascript">
+				function drawSun(c, w, h, t) {
+					let theta = t * 2 * Math.PI + (Math.PI / 2);
+					let rX = 0.95 * (w / 2);
+					let rY = 0.90 * (h);
+					let size = 0.05 * ((w + h) / 2);
+					let sunX = rX * Math.cos(theta) + (w / 2);
+					let sunY = rY * Math.sin(theta) + (0.95 * h);
+					if (sunY - size > h) { // Don't bother drawing if sun is below horizon.
+						return;
+					}
+
+					c.beginPath();
+					let g = c.createRadialGradient(sunX, sunY, size / 2, sunX, sunY, size);
+					g.addColorStop(0, SUN_COLOR);
+					g.addColorStop(1, "rgba(255, 196, 0, 0)");
+					c.fillStyle = g;
+					c.arc(sunX, sunY, size, 0, 2 * Math.PI, false);
+					c.fill();
+				}
+			</code></pre>
+			<figcaption>This function first computes the angle <code>theta</code>, then the sun's x and y coordinates using the standard formulas <code>x = r * cos(theta)</code> and <code>y = r * sin(theta)</code>. Notice that for x, we use a radius that's 95% of half the canvas width, and for y, 90% of the height. This means that at dawn and dusk, the sun will sit just before the edge of the screen, and at noon, the sun will almost touch the top of the screen. The sun's size is just computed as 5% of the average of the canvas' width and height.</figcaption>
+		</figure>
+	</section>
+	<section>
+		<h3>Sky Coloring</h3>
+		<p>
+			The sky's color-changing behavior is a little less involved than the sun's position calculations, but still interesting! I start by defining four base colors (<em>in RGB-triplet arrays</em>) representing the four extremes in terms of sky color.
+		</p>
+		<pre><code class="language-javascript">
+			const SKY_MIDNIGHT = [41, 20, 100];
+			const SKY_DAWN = [255, 149, 145];
+			const SKY_DAY = [255, 255, 230];
+			const SKY_DUSK = [255, 177, 33];
+		</code></pre>
+		<p>
+			Next, I defined a function that would <em>interpolate</em> between any two RGB colors, linearly.
+		</p>
+		<pre><code class="language-javascript">
+			function interpolateColor(c1, c2, t, start, stop) {
+				let factor = (t - start) / (stop - start);
+				let result = c1.slice();
+				for (let i = 0; i < 3; i++) {
+					result[i] = Math.round(result[i] + factor * (c2[i] - c1[i]));
+				}
+				return result;
+			}
+		</code></pre>
+		<p>
+			Using this, I manually defined a function that would interpolate certain colors based on threshold values of time. For a while, I thought about the possibility of defining a dynamic mapping, but since the colors of the sky don't change too often, I decided to just stick with this simple manual mapping from time intervals to colors.
+		</p>
+		<pre><code class="language-javascript">
+			function getSkyColor(t) {
+				if (t >= 0.35 && t < 0.65) {
+					return SKY_DAY;
+				} else if (t >= 0.85 || t < 0.15) {
+					return SKY_MIDNIGHT;
+				} else if (t >= 0.15 && t < 0.25) {
+					return interpolateColor(SKY_MIDNIGHT, SKY_DAWN, t, 0.15, 0.25);
+				} else if (t >= 0.25 && t < 0.35) {
+					return interpolateColor(SKY_DAWN, SKY_DAY, t, 0.25, 0.35);
+				} else if (t >= 0.65 && t < 0.75) {
+					return interpolateColor(SKY_DAY, SKY_DUSK, t, 0.65, 0.75)
+				} else if (t >= 0.75 && t < 0.85) {
+					return interpolateColor(SKY_DUSK, SKY_MIDNIGHT, t, 0.75, 0.85);
+				}
+				return [0, 0, 0];
+			}
+		</code></pre>
+	</section>
+	<section>
+		<p>
+			In the future I might add more dynamic visuals like clouds, birds, or airplanes passing by overhead. But for now, this seems like a decent thing to have on my homepage.
+		</p>
+	</section>
+</article>
+<script src="../../js/consent.js"></script>
+<script src="../../js/prism.js"></script>
+</body>
+</html>
