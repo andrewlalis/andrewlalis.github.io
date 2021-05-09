@@ -1,3 +1,8 @@
+:root {
+    /* Color theme definitions */
+    --articleBackground: #fffbf2;
+}
+
 .articles_list {
     max-width: 50%;
     margin-left: auto;
@@ -9,13 +14,34 @@
     padding: 0;
 }
 
+.articles_list li {
+    margin: 1em 0;
+}
+
+.articles_list a {
+    display: block;
+    padding: 0.5em;
+    background-color: var(--articleBackground);
+}
+
+.articles_list h3 {
+    color: var(--linkColor);
+    font-weight: normal;
+    margin: 0.5em 0;
+}
+
+.articles_list p {
+    color: var(--textColor);
+    margin: 0.5em 0;
+}
+
 article {
     max-width: 40%;
     margin-left: auto;
     margin-right: auto;
     font-size: 1em;
     line-height: 1.8em;
-    background-color: #fffbf2;
+    background-color: var(--articleBackground);
     padding: 1em 3em;
 }
 

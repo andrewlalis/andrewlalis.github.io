@@ -30,7 +30,7 @@
 	<header>
 		<h2>2D Game Development with Java and Swing</h2>
 		<p>
-			<em>Written on <time>30 April, 2021</time>, by Andrew Lalis.</em>
+			<em>Written on <time>09 May, 2021</time>, by Andrew Lalis.</em>
 		</p>
 	</header>
 	<section>
@@ -219,8 +219,45 @@
 	<section id="listeners">
 		<h3>Listeners and Control</h3>
 		<p>
-			<em>Work In Progress</em>
+			Most often, you'll want something to happen when the player presses a key or clicks the mouse. To do this, you should create your own class which extends from <a href="https://docs.oracle.com/javase/8/docs/api/java/awt/event/KeyAdapter.html">KeyAdapter</a> or <a href="https://docs.oracle.com/javase/8/docs/api/java/awt/event/MouseAdapter.html">MouseAdapter</a>, depending on what you want to do.
+			<br>
+			<small><em>You can also directly implement <a href="https://docs.oracle.com/javase/8/docs/api/java/awt/event/KeyListener.html">KeyListener</a> and <a href="https://docs.oracle.com/javase/8/docs/api/java/awt/event/MouseListener.html">MouseListener</a> at the same time, but this isn't as clean, and you have to implement every method declared in the interfaces, even if you aren't using them.</em></small>
 		</p>
+		<p>
+			Let's take a look at a common case: doing something when a key is pressed. To do so, we override the KeyAdapter's <code>keyPressed</code> method like so:
+		</p>
+		<figure>
+			<pre><code class="language-java">
+				@Override
+				public void keyPressed(KeyEvent e) {
+					int c = e.getKeyCode();
+					if (c == KeyEvent.VK_W) {
+						player.getShip().forwardThrusterEnabled = true;
+					} else if (c == KeyEvent.VK_A) {
+						player.getShip().turningLeft = true;
+					} else if (c == KeyEvent.VK_D) {
+						player.getShip().turningRight = true;
+					}
+				}
+			</code></pre>
+			<figcaption>To check what key was pressed, we call <code>getKeyCode()</code> on the key event that was received, and then check if it matches one of the constants defined in the <a href="https://docs.oracle.com/javase/8/docs/api/java/awt/event/KeyEvent.html">KeyEvent</a> class, and if so, then we do something to our player. In this case, we set some boolean flags that indicate how the player's ship is trying to move.</figcaption>
+		</figure>
+		<p>
+			Handling mouse events works almost the same way, but instead we check what button of the mouse was pressed.
+		</p>
+		<figure>
+			<pre><code class="language-java">
+				@Override
+				public void mouseClicked(MouseEvent e) {
+					int b = e.getButton();
+					if (b == MouseEvent.BUTTON1) {
+						System.out.printf("Player clicked at x=%d, y=%d\n", e.getX(), e.getY());
+						player.getShip().firingBlaster = true;
+					}
+				}
+			</code></pre>
+			<figcaption>In this example, I show both checking which button was pressed, and also checking where the button was pressed. <code>getX()</code> and <code>getY()</code> return the x- and y-coordinates relative to the <em>source component</em>, which will most often be the JFrame or JPanel that the user clicked on.</figcaption>
+		</figure>
 	</section>
 </article>
 <script src="../../js/consent.js"></script>
