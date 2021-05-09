@@ -3,6 +3,11 @@
     --articleBackground: #fffbf2;
 }
 
+.article_title {
+    color: var(--textColor);
+    font-weight: bold;
+}
+
 .articles_list {
     max-width: 50%;
     margin-left: auto;
