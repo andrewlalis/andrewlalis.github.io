@@ -4,15 +4,46 @@ const SKY_DAY = [255, 255, 230];
 const SKY_DUSK = [255, 177, 33];
 
 const SUN_COLOR = "#ffc400";
-const WIND_SPEED = 0.001 * randRange(-1, 1);
 
-class Cloud {
-	constructor(x, y, width, height, fluffiness) {
+const WIND_SPEED = 0.001 * randRange(-1, 1);
+const MIN_CLOUD_PARTS = 3;
+const MAX_CLOUD_PARTS = 20;
+
+class CloudPart {
+	/**
+	 * @param {Number} x
+	 * @param {Number} y
+	 * @param {Number} width
+	 * @param {Number} height
+	 * @param {Number} fluffiness
+	 * @param {Number} brightness
+	 */
+	constructor(x, y, width, height, fluffiness, brightness) {
 		this.x = x;
 		this.y = y;
 		this.width = width;
 		this.height = height;
 		this.fluffiness = fluffiness;
+		this.brightness = brightness;
+	}
+}
+
+class Cloud {
+	/**
+	 * @param {Number} x
+	 * @param {Number} y
+	 * @param {CloudPart[]} parts
+	 */
+	constructor(x, y, parts) {
+		this.x = x;
+		this.y = y;
+		this.parts = parts;
+		this.minX = Math.min.apply(null, this.parts.map(part => part.x));
+		this.maxX = Math.max.apply(null, this.parts.map(part => part.x + part.width));
+		this.minY = Math.min.apply(null, this.parts.map(part => part.y));
+		this.maxY = Math.max.apply(null, this.parts.map(part => part.y + part.height));
+		this.width = this.maxX - this.minX;
+		this.height = this.maxY - this.minY;
 	}
 }
 
@@ -84,26 +115,24 @@ function drawSky(c, w, h, t) {
 
 function drawClouds(c, w, h, t) {
 	clouds.forEach(cloud => {
-		const x = cloud.x * w;
-		const y = cloud.y * h;
-		const width = cloud.width * w;
-		const height = cloud.height * h;
-		let txOriginal = c.getTransform();
-		c.beginPath();
-		c.transform(width, 0, 0, height, x, y);
-		let g = c.createRadialGradient(0, 0, 1 - cloud.fluffiness, 0, 0, 1);
-		g.addColorStop(0, "#fff");
-		g.addColorStop(1, "rgba(255, 255, 255, 0)");
-		c.fillStyle = g;
-		c.arc(0, 0, 1, 0, 2 * Math.PI, false);
-		c.fill();
-		c.setTransform(txOriginal);
+		cloud.parts.forEach(part => {
+			const x = (cloud.x + part.x) * w;
+			const y = (cloud.y + part.y) * h;
+			const width = part.width * w;
+			const height = part.height * h;
+			let txOriginal = c.getTransform();
+			c.beginPath();
+			c.transform(width, 0, 0, height, x, y);
+			let g = c.createRadialGradient(0, 0, 1 - part.fluffiness, 0, 0, 1);
+			const colorRgb = 255 * part.brightness;
+			g.addColorStop(0, `rgba(${colorRgb}, ${colorRgb}, ${colorRgb}, 255)`);
+			g.addColorStop(1, `rgba(${colorRgb}, ${colorRgb}, ${colorRgb}, 0)`);
+			c.fillStyle = g;
+			c.arc(0, 0, 1, 0, 2 * Math.PI, false);
+			c.fill();
+			c.setTransform(txOriginal);
+		});
 	});
-}
-
-function drawForeground(c, w, h, t) {
-	c.fillStyle = "#006911";
-	c.fillRect(0, h - 0.05 * h, w, 0.05 * h);
 }
 
 /**
@@ -114,7 +143,7 @@ function drawForeground(c, w, h, t) {
  * @param {Number} dt
  */
 function updateObjects(c, w, h, dt) {
-	clouds.forEach(cloud => cloud.x += WIND_SPEED);
+	clouds.forEach(cloud => cloud.x += WIND_SPEED * (1 + 2 * cloud.y));
 	if (WIND_SPEED > 0) {
 		clouds.removeIf(cloud => cloud.x - cloud.width > 1);
 	} else {
@@ -124,12 +153,22 @@ function updateObjects(c, w, h, dt) {
 	if (Math.random() < chance) spawnCloud();
 }
 
-function spawnCloud(setX = undefined) {
-	const width = randRange(0.05, 0.15);
-	const height = randRange(0.01, width * 0.666);
-	const x = setX !== undefined ? setX : (WIND_SPEED > 0 ? -width : 1 + width);
-	const y = randRange(0.001, 0.75);
-	clouds.push(new Cloud(x, y, width, height, randRange(0.25, 0.95)));
+function spawnCloud(cloudX = undefined) {
+	const parts = [];
+	const partCount = randIntRange(MIN_CLOUD_PARTS, MAX_CLOUD_PARTS);
+	const SPREAD = 0.005 * partCount;
+	const brightness = randRange(0.5, 1);
+	while (parts.length < partCount) {
+		const width = randRange(0.01, 0.05);
+		const height = randRange(0.01, width);
+		const x = randRange(0, SPREAD);
+		const y = randRange(0, SPREAD);
+		const partBrightness = Math.min(1, brightness + randRange(-0.1, 0.1));
+		parts.push(new CloudPart(x, y, width, height, randRange(0.75, 1), partBrightness));
+	}
+	const cloud = new Cloud(cloudX, randRange(0, 0.75), parts);
+	if (cloud.x === undefined) cloud.x = WIND_SPEED > 0 ? -cloud.width : 1 + cloud.width;
+	clouds.push(cloud);
 }
 
 function getSkyColor(t) {

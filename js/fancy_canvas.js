@@ -34,4 +34,4 @@ window.setInterval(() => {
 	updateObjects(c, c.canvas.width, c.canvas.height, (now - lastUpdate) / 1000);
 	updateCanvas();
 	lastUpdate = now;
-}, 100);
+}, 30);
