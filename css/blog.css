@@ -1,6 +1,6 @@
 :root {
     /* Color theme definitions */
-    --articleBackground: #fffbf2;
+    --articleBackground: #111111;
 }
 
 .article_title {
@@ -9,35 +9,49 @@
 }
 
 .articles_list {
-    max-width: 50%;
+    max-width: 70%;
     margin-left: auto;
     margin-right: auto;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    align-items: flex-start;
+    align-content: flex-start;
+    gap: 30px 5%;
 }
 
-.articles_list ul {
-    list-style-type: none;
-    padding: 0;
+.article_card {
+    flex-basis: 30%;
 }
 
-.articles_list li {
-    margin: 1em 0;
-}
-
-.articles_list a {
+.article_card a {
     display: block;
-    padding: 0.5em;
+    padding: 1em;
     background-color: var(--articleBackground);
+    margin-bottom: 1.5em;
+    box-shadow: 0 1px 1px rgba(0,0,0,0.08),
+        0 2px 2px rgba(0,0,0,0.10),
+        0 4px 4px rgba(0,0,0,0.12),
+        0 8px 8px rgba(0,0,0,0.14),
+        0 16px 16px rgba(0,0,0,0.16);
 }
 
-.articles_list h3 {
+.article_card_title {
     color: var(--linkColor);
     font-weight: normal;
-    margin: 0.5em 0;
+    margin-top: 0;
+    margin-bottom: 0.5em;
+    font-size: 22px;
 }
-
-.articles_list p {
+.article_card_body {
     color: var(--textColor);
     margin: 0.5em 0;
+    font-size: 16px;
+}
+.article_card_subtext {
+    font-size: 12px;
+    color: var(--textColorDarker);
+    margin: 0;
 }
 
 article {
@@ -48,10 +62,16 @@ article {
     line-height: 1.8em;
     background-color: var(--articleBackground);
     padding: 1em 3em;
+
+    box-shadow: 0 1px 1px rgba(0,0,0,0.08),
+        0 2px 2px rgba(0,0,0,0.10),
+        0 4px 4px rgba(0,0,0,0.12),
+        0 8px 8px rgba(0,0,0,0.14),
+        0 16px 16px rgba(0,0,0,0.16);
 }
 
 article a {
-    color: #666;
+    color: var(--linkColorSubtle);
 }
 
 article section + section {
@@ -72,8 +92,17 @@ section:last-of-type {
     .articles_list {
         max-width: 100%;
     }
-    .articles_list ul {
-        font-size: 5em;
+    .article_card {
+        flex-basis: auto;
+    }
+    .article_card_title {
+        font-size: 48px;
+    }
+    .article_card_body {
+        font-size: 32px;
+    }
+    .article_card_subtext {
+        font-size: 28px;
     }
 
     article {
