@@ -4,7 +4,35 @@ const SKY_DAY = [255, 255, 230];
 const SKY_DUSK = [255, 177, 33];
 
 const SUN_COLOR = "#ffc400";
+const WIND_SPEED = 0.001 * Math.random();
 
+class Cloud {
+	constructor(x, y, width, height, fluffiness) {
+		this.x = x;
+		this.y = y;
+		this.width = width;
+		this.height = height;
+		this.fluffiness = fluffiness;
+	}
+}
+
+/**
+ * The list of clouds to render.
+ * @type {Cloud[]}
+ */
+let clouds = [];
+
+for (let i = 0; i < 10; i++) {
+	spawnCloud(randRange(0.05, 0.95));
+}
+
+/**
+ * Draws the world on the given rendering context, using the given width, height and current time.
+ * @param {CanvasRenderingContext2D} c
+ * @param {Number} w
+ * @param {Number} h
+ * @param {Number} t
+ */
 function draw(c, w, h, t) {
 	drawSky(c, w, h, t);
 	drawSun(c, w, h, t);
@@ -51,6 +79,26 @@ function drawSky(c, w, h, t) {
 	g.addColorStop(0, "rgb(" + skyColor[0] + ", " + skyColor[1] + ", " + skyColor[2] + ")");
 	c.fillStyle = g;
 	c.fillRect(0, 0, w, h);
+	drawClouds(c, w, h, t);
+}
+
+function drawClouds(c, w, h, t) {
+	clouds.forEach(cloud => {
+		const x = cloud.x * w;
+		const y = cloud.y * h;
+		const width = cloud.width * w;
+		const height = cloud.height * h;
+		let txOriginal = c.getTransform();
+		c.beginPath();
+		c.transform(width, 0, 0, height, x, y);
+		let g = c.createRadialGradient(0, 0, 1 - cloud.fluffiness, 0, 0, 1);
+		g.addColorStop(0, "#fff");
+		g.addColorStop(1, "rgba(255, 255, 255, 0)");
+		c.fillStyle = g;
+		c.arc(0, 0, 1, 0, 2 * Math.PI, false);
+		c.fill();
+		c.setTransform(txOriginal);
+	});
 }
 
 function drawForeground(c, w, h, t) {
@@ -58,7 +106,30 @@ function drawForeground(c, w, h, t) {
 	c.fillRect(0, h - 0.05 * h, w, 0.05 * h);
 }
 
-function updateObjects(c, dt) {
+/**
+ * Updates any objects in this scene.
+ * @param {CanvasRenderingContext2D} c
+ * @param {Number} w
+ * @param {Number} h
+ * @param {Number} dt
+ */
+function updateObjects(c, w, h, dt) {
+	clouds.forEach(cloud => cloud.x += WIND_SPEED);
+	if (WIND_SPEED > 0) {
+		clouds.removeIf(cloud => cloud.x - cloud.width > 1);
+	} else {
+		clouds.removeIf(cloud => cloud.x + cloud.width < 0);
+	}
+	const chance = Math.abs(WIND_SPEED) * 10;
+	if (Math.random() < chance) spawnCloud();
+}
+
+function spawnCloud(setX = undefined) {
+	const width = randRange(0.05, 0.15);
+	const height = randRange(0.01, width * 0.666);
+	const x = setX !== undefined ? setX : (WIND_SPEED > 0 ? -width : 1 + width);
+	const y = randRange(0.001, 0.75);
+	clouds.push(new Cloud(x, y, width, height, randRange(0.25, 0.95)));
 }
 
 function getSkyColor(t) {

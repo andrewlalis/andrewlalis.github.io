@@ -24,25 +24,14 @@ if (typeof draw === "undefined") {
 	throw new Error("Undefined draw method. Please add a script which implements draw(ctx, w, h, t).");
 }
 if (typeof updateObjects === "undefined") {
-	throw new Error("Undefined updateObjects method. Please add a script which implements updateObjects(ctx, dt).");
+	throw new Error("Undefined updateObjects method. Please add a script which implements updateObjects(ctx, w, h, dt).");
 }
 resizeCanvas();
 window.addEventListener("resize", resizeCanvas, false);
 let lastUpdate = Date.now();
 window.setInterval(() => {
 	let now = Date.now();
-	updateObjects(c, (now - lastUpdate) / 1000);
+	updateObjects(c, c.canvas.width, c.canvas.height, (now - lastUpdate) / 1000);
 	updateCanvas();
 	lastUpdate = now;
-}, 1000);
-
-/* Utility methods */
-function randRange(min, max) {
-	return Math.random() * (max - min) + min;
-}
-
-function randIntRange(min, max) {
-	min = Math.ceil(min);
-	max = Math.floor(max);
-	return Math.floor(Math.random() * (max - min) + min);
-}
+}, 100);
