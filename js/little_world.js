@@ -4,7 +4,7 @@ const SKY_DAY = [255, 255, 230];
 const SKY_DUSK = [255, 177, 33];
 
 const SUN_COLOR = "#ffc400";
-const WIND_SPEED = 0.001 * Math.random();
+const WIND_SPEED = 0.001 * randRange(-1, 1);
 
 class Cloud {
 	constructor(x, y, width, height, fluffiness) {
