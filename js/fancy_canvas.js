@@ -1,21 +1,24 @@
 const canvas = document.querySelector(".background_canvas");
+/**
+ * @param {CanvasRenderingContext2D}
+ */
 const c = canvas.getContext("2d");
 
 function resizeCanvas() {
 	c.canvas.width = window.innerWidth;
 	c.canvas.height = document.documentElement.scrollHeight;
-	var body = document.body, html = document.documentElement;
+	const body = document.body, html = document.documentElement;
 	c.canvas.height = Math.max(body.scrollHeight, body.offsetHeight, html.clientHeight, html.scrollHeight, html.offsetHeight);
 	updateCanvas();
 }
 
 function updateCanvas() {
-	let w = c.canvas.width;
-	let h = c.canvas.height;
-	let date = new Date();
-	let secondsInADay = 60 * 60 * 24;
-	let secondsPassed = date.getHours() * 60 * 60 + date.getMinutes() * 60 + date.getSeconds();
-	let t = secondsPassed / secondsInADay;
+	const w = c.canvas.width;
+	const h = c.canvas.height;
+	const date = new Date();
+	const millisecondsInADay = 60 * 60 * 24 * 1000;
+	const millisecondsPassed = date.getHours() * 60 * 60 * 1000 + date.getMinutes() * 60 * 1000 + date.getSeconds() * 1000 + date.getMilliseconds();
+	const t = millisecondsPassed / millisecondsInADay;
 	c.clearRect(0, 0, w, h);
 	draw(c, w, h, t);
 }
@@ -30,8 +33,8 @@ resizeCanvas();
 window.addEventListener("resize", resizeCanvas, false);
 let lastUpdate = Date.now();
 window.setInterval(() => {
-	let now = Date.now();
-	updateObjects(c, c.canvas.width, c.canvas.height, (now - lastUpdate) / 1000);
+	const now = Date.now();
+	updateObjects(c, c.canvas.width, c.canvas.height, (now - lastUpdate) / 1000.0);
 	updateCanvas();
 	lastUpdate = now;
 }, 30);

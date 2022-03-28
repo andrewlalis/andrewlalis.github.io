@@ -6,6 +6,8 @@ const SKY_DUSK = [255, 177, 33];
 const SUN_COLOR = "#ffc400";
 
 const WIND_SPEED = 0.001 * randRange(-1, 1);
+const CLOUD_SPAWN_CHANCE = Math.abs(WIND_SPEED) * randRange(10, 150);
+const CLOUD_BASE_BRIGHTNESS = randRange(0.5, 1);
 const MIN_CLOUD_PARTS = 3;
 const MAX_CLOUD_PARTS = 20;
 
@@ -67,6 +69,7 @@ for (let i = 0; i < 10; i++) {
 function draw(c, w, h, t) {
 	drawSky(c, w, h, t);
 	drawSun(c, w, h, t);
+	drawClouds(c, w, h, t);
 	//drawForeground(c, w, h, t);
 }
 
@@ -91,11 +94,41 @@ function drawSun(c, w, h, t) {
 	c.arc(sunX, sunY, size, 0, 2 * Math.PI, false);
 	c.fill();
 
-	// c.fillStyle = "#000";
-	// c.textAlign = "center";
-	// c.font = "14px Work Sans";
-	// c.textBaseline = "middle";
-	// c.fillText(date.toLocaleTimeString("en-NL"), sunX, sunY);
+	if (t >= 0.2 && t <= 0.8) drawGodRays(t, sunX, sunY, w, h);
+
+	c.fillStyle = "#000";
+	c.textAlign = "center";
+	c.font = "14px Work Sans";
+	c.textBaseline = "middle";
+	const date = new Date();
+	c.fillText(date.toLocaleTimeString("en-NL"), sunX, sunY);
+}
+
+function drawGodRays(t, sunX, sunY, w, h) {
+	const dayT = (t - 0.25) * 2;
+	const godRayBrightness = Math.pow((Math.cos(dayT * 2 * Math.PI) + 1) / 2, 2) * 0.25;
+	if (godRayBrightness > 0.01) {
+		c.fillStyle = `rgba(255, 196, 0, ${1})`;
+		const slices = 32;
+		const sliceSizeRad = 2 * Math.PI / slices;
+		const screenDiagonalLength = Math.sqrt(w * w + h * h);
+		const R = 2 * Math.PI * (dayT * 500);
+		// TODO: Fix bug with ray rendering when t > 0.6
+		for (let i = 0; i < slices; i++) {
+			if (i % 2 != 0) continue;
+			const angleStart = sliceSizeRad * i;
+			const angleEnd = sliceSizeRad * (i + 1);
+			const startX = screenDiagonalLength * Math.cos(angleStart);
+			const startY = screenDiagonalLength * Math.sin(angleStart);
+			const endX = screenDiagonalLength * Math.cos(angleEnd);
+			const endY = screenDiagonalLength * Math.sin(angleEnd);
+			c.beginPath();
+			c.moveTo(sunX, sunY);
+			c.lineTo(startX, startY);
+			c.lineTo(endX, endY);
+			c.fill();
+		}
+	}
 }
 
 function drawSky(c, w, h, t) {
@@ -110,7 +143,6 @@ function drawSky(c, w, h, t) {
 	g.addColorStop(0, "rgb(" + skyColor[0] + ", " + skyColor[1] + ", " + skyColor[2] + ")");
 	c.fillStyle = g;
 	c.fillRect(0, 0, w, h);
-	drawClouds(c, w, h, t);
 }
 
 function drawClouds(c, w, h, t) {
@@ -149,21 +181,19 @@ function updateObjects(c, w, h, dt) {
 	} else {
 		clouds.removeIf(cloud => cloud.x + cloud.width < 0);
 	}
-	const chance = Math.abs(WIND_SPEED) * 10;
-	if (Math.random() < chance) spawnCloud();
+	if (Math.random() < CLOUD_SPAWN_CHANCE) spawnCloud();
 }
 
 function spawnCloud(cloudX = undefined) {
 	const parts = [];
 	const partCount = randIntRange(MIN_CLOUD_PARTS, MAX_CLOUD_PARTS);
 	const SPREAD = 0.005 * partCount;
-	const brightness = randRange(0.5, 1);
 	while (parts.length < partCount) {
 		const width = randRange(0.01, 0.05);
 		const height = randRange(0.01, width);
 		const x = randRange(0, SPREAD);
 		const y = randRange(0, SPREAD);
-		const partBrightness = Math.min(1, brightness + randRange(-0.1, 0.1));
+		const partBrightness = Math.min(1, CLOUD_BASE_BRIGHTNESS + randRange(-0.1, 0.1));
 		parts.push(new CloudPart(x, y, width, height, randRange(0.75, 1), partBrightness));
 	}
 	const cloud = new Cloud(cloudX, randRange(0, 0.75), parts);
