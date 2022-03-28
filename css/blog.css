@@ -103,7 +103,10 @@ article figcaption {
         max-width: 100%;
     }
     .article_card {
-        flex-basis: auto;
+        flex-basis: 100%;
+    }
+    .article_card a {
+        box-shadow: none;
     }
     .article_card_title {
         font-size: 48px;

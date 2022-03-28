@@ -28,6 +28,8 @@ body{
     background-color: var(--backgroundColor);
     color: var(--textColor);
     font-size: 18px;
+    padding: 0;
+    margin: 0;
 }
 
 a {
