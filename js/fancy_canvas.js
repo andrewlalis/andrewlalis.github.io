@@ -20,7 +20,8 @@ function updateCanvas() {
 	const millisecondsPassed = date.getHours() * 60 * 60 * 1000 + date.getMinutes() * 60 * 1000 + date.getSeconds() * 1000 + date.getMilliseconds();
 	const t = millisecondsPassed / millisecondsInADay;
 	c.clearRect(0, 0, w, h);
-	draw(c, w, h, t);
+	const tTest = (date.getSeconds() * 1000 + date.getMilliseconds()) / (1000 * 60);
+	draw(c, w, h, tTest);
 }
 
 if (typeof draw === "undefined") {

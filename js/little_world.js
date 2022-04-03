@@ -70,7 +70,6 @@ function draw(c, w, h, t) {
 	drawSky(c, w, h, t);
 	drawSun(c, w, h, t);
 	drawClouds(c, w, h, t);
-	//drawForeground(c, w, h, t);
 }
 
 function drawSun(c, w, h, t) {
@@ -94,34 +93,35 @@ function drawSun(c, w, h, t) {
 	c.arc(sunX, sunY, size, 0, 2 * Math.PI, false);
 	c.fill();
 
-	if (t >= 0.2 && t <= 0.8) drawGodRays(t, sunX, sunY, w, h);
+	if (t >= 0.2 && t <= 0.8) {
+		drawGodRays(t, sunX, sunY, w, h);
+	}
 
 	c.fillStyle = "#000";
-	c.textAlign = "center";
+	c.textAlign = "left";
 	c.font = "14px Work Sans";
 	c.textBaseline = "middle";
 	const date = new Date();
-	c.fillText(date.toLocaleTimeString("en-NL"), sunX, sunY);
+	c.fillText(date.toLocaleTimeString("en-NL"), 20, 20);
 }
 
 function drawGodRays(t, sunX, sunY, w, h) {
 	const dayT = (t - 0.25) * 2;
 	const godRayBrightness = Math.pow((Math.cos(dayT * 2 * Math.PI) + 1) / 2, 2) * 0.25;
 	if (godRayBrightness > 0.01) {
-		c.fillStyle = `rgba(255, 196, 0, ${1})`;
+		c.fillStyle = `rgba(255, 196, 0, ${godRayBrightness})`;
 		const slices = 32;
 		const sliceSizeRad = 2 * Math.PI / slices;
 		const screenDiagonalLength = Math.sqrt(w * w + h * h);
-		const R = 2 * Math.PI * (dayT * 500);
-		// TODO: Fix bug with ray rendering when t > 0.6
+		const R = 2 * Math.PI * (dayT * 100);
 		for (let i = 0; i < slices; i++) {
-			if (i % 2 != 0) continue;
-			const angleStart = sliceSizeRad * i;
-			const angleEnd = sliceSizeRad * (i + 1);
-			const startX = screenDiagonalLength * Math.cos(angleStart);
-			const startY = screenDiagonalLength * Math.sin(angleStart);
-			const endX = screenDiagonalLength * Math.cos(angleEnd);
-			const endY = screenDiagonalLength * Math.sin(angleEnd);
+			if (i % 2 !== 0) continue;
+			const angleStart = sliceSizeRad * i + R;
+			const angleEnd = angleStart + sliceSizeRad;
+			const startX = sunX + screenDiagonalLength * Math.cos(angleStart);
+			const startY = sunY + screenDiagonalLength * Math.sin(angleStart);
+			const endX = sunX + screenDiagonalLength * Math.cos(angleEnd);
+			const endY = sunY + screenDiagonalLength * Math.sin(angleEnd);
 			c.beginPath();
 			c.moveTo(sunX, sunY);
 			c.lineTo(startX, startY);
