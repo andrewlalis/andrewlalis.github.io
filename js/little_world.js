@@ -1,4 +1,4 @@
-const SKY_MIDNIGHT = [41, 20, 100];
+const SKY_MIDNIGHT = [20, 5, 50];
 const SKY_DAWN = [255, 149, 145];
 const SKY_DAY = [255, 255, 230];
 const SKY_DUSK = [255, 177, 33];
@@ -6,10 +6,12 @@ const SKY_DUSK = [255, 177, 33];
 const SUN_COLOR = "#ffc400";
 
 const WIND_SPEED = 0.001 * randRange(-1, 1);
-const CLOUD_SPAWN_CHANCE = Math.abs(WIND_SPEED) * randRange(10, 150);
+const CLOUD_SPAWN_CHANCE = Math.abs(WIND_SPEED) * randRange(10, 75);
+const LIGHTNING_SPAWN_CHANCE = CLOUD_SPAWN_CHANCE / 100;
 const CLOUD_BASE_BRIGHTNESS = randRange(0.5, 1);
+const STORM_CLOUD_THRESHOLD = 0.6;
 const MIN_CLOUD_PARTS = 3;
-const MAX_CLOUD_PARTS = 20;
+const MAX_CLOUD_PARTS = 12;
 
 class CloudPart {
 	/**
@@ -46,6 +48,7 @@ class Cloud {
 		this.maxY = Math.max.apply(null, this.parts.map(part => part.y + part.height));
 		this.width = this.maxX - this.minX;
 		this.height = this.maxY - this.minY;
+		this.avgBrightness = this.parts.map(part => part.brightness).reduce((a, b) => a + b, 0) / this.parts.length;
 	}
 }
 
@@ -58,6 +61,17 @@ let clouds = [];
 for (let i = 0; i < 10; i++) {
 	spawnCloud(randRange(0.05, 0.95));
 }
+
+class Lightning {
+	constructor(points, thickness, lifetime) {
+		this.points = points;
+		this.createdAt = Date.now();
+		this.thickness = thickness;
+		this.lifetime = lifetime;
+	}
+}
+
+const lightnings = [];
 
 /**
  * Draws the world on the given rendering context, using the given width, height and current time.
@@ -84,25 +98,17 @@ function drawSun(c, w, h, t) {
 	}
 
 	c.beginPath();
-	let g = c.createRadialGradient(sunX, sunY, size / 2, sunX, sunY, size);
+	const pulseFactor = Math.cos(2 * Math.PI * t * 10000) * 5 + 5;
+	let g = c.createRadialGradient(sunX, sunY, size / 2, sunX, sunY, size - pulseFactor);
 	g.addColorStop(0, SUN_COLOR);
 	g.addColorStop(1, "rgba(255, 196, 0, 0)");
 	c.fillStyle = g;
-
-
 	c.arc(sunX, sunY, size, 0, 2 * Math.PI, false);
 	c.fill();
 
 	if (t >= 0.2 && t <= 0.8) {
 		drawGodRays(t, sunX, sunY, w, h);
 	}
-
-	c.fillStyle = "#000";
-	c.textAlign = "left";
-	c.font = "14px Work Sans";
-	c.textBaseline = "middle";
-	const date = new Date();
-	c.fillText(date.toLocaleTimeString("en-NL"), 20, 20);
 }
 
 function drawGodRays(t, sunX, sunY, w, h) {
@@ -134,6 +140,9 @@ function drawGodRays(t, sunX, sunY, w, h) {
 function drawSky(c, w, h, t) {
 	let g = c.createLinearGradient(0, 0, 0, h);
 	let skyColor = getSkyColor(t);
+	if (lightnings.length > 0) {
+		skyColor = interpolateColor(skyColor, [255, 255, 255], 0.5, 0, 1);
+	}
 	if (skyColor[0] < 128) {
 		document.documentElement.style.setProperty("--textColor", "#EEE");
 	} else {
@@ -146,6 +155,16 @@ function drawSky(c, w, h, t) {
 }
 
 function drawClouds(c, w, h, t) {
+	c.strokeStyle = "#fff";
+	lightnings.forEach(lightning => {
+		c.lineWidth = lightning.thickness;
+		c.beginPath();
+		c.moveTo(lightning.points[0].x, lightning.points[0].y);
+		for (let i = 1; i < lightning.points.length; i++) {
+			c.lineTo(lightning.points[i].x, lightning.points[i].y);
+		}
+		c.stroke();
+	});
 	clouds.forEach(cloud => {
 		cloud.parts.forEach(part => {
 			const x = (cloud.x + part.x) * w;
@@ -162,7 +181,7 @@ function drawClouds(c, w, h, t) {
 			c.fillStyle = g;
 			c.arc(0, 0, 1, 0, 2 * Math.PI, false);
 			c.fill();
-			c.setTransform(txOriginal);
+			c.resetTransform();
 		});
 	});
 }
@@ -175,13 +194,22 @@ function drawClouds(c, w, h, t) {
  * @param {Number} dt
  */
 function updateObjects(c, w, h, dt) {
-	clouds.forEach(cloud => cloud.x += WIND_SPEED * (1 + 2 * cloud.y));
+	clouds.forEach(cloud => {
+		cloud.x += WIND_SPEED * (1 + 2 * cloud.y);
+		if (cloud.avgBrightness < STORM_CLOUD_THRESHOLD && Math.random() < LIGHTNING_SPAWN_CHANCE) {
+			spawnLightning(cloud, w, h);
+		}
+	});
+	const now = Date.now();
+	lightnings.removeIf(l => now - l.createdAt > l.lifetime);
 	if (WIND_SPEED > 0) {
 		clouds.removeIf(cloud => cloud.x - cloud.width > 1);
 	} else {
 		clouds.removeIf(cloud => cloud.x + cloud.width < 0);
 	}
-	if (Math.random() < CLOUD_SPAWN_CHANCE) spawnCloud();
+	if (Math.random() < CLOUD_SPAWN_CHANCE) {
+		spawnCloud();
+	}
 }
 
 function spawnCloud(cloudX = undefined) {
@@ -189,7 +217,7 @@ function spawnCloud(cloudX = undefined) {
 	const partCount = randIntRange(MIN_CLOUD_PARTS, MAX_CLOUD_PARTS);
 	const SPREAD = 0.005 * partCount;
 	while (parts.length < partCount) {
-		const width = randRange(0.01, 0.05);
+		const width = randRange(0.01, 0.1);
 		const height = randRange(0.01, width);
 		const x = randRange(0, SPREAD);
 		const y = randRange(0, SPREAD);
@@ -199,6 +227,30 @@ function spawnCloud(cloudX = undefined) {
 	const cloud = new Cloud(cloudX, randRange(0, 0.75), parts);
 	if (cloud.x === undefined) cloud.x = WIND_SPEED > 0 ? -cloud.width : 1 + cloud.width;
 	clouds.push(cloud);
+}
+
+function spawnLightning(cloud, w, h) {
+	const start = new Point(
+		cloud.x * w + cloud.width / 2,
+		cloud.y * h + cloud.height / 2
+	);
+	let done = false;
+	const points = [start];
+	let lastPoint = start;
+	while (!done && points.length < 25) {
+		const length = randRange(5, 250);
+		const angle = randRange(-Math.PI / 6, 7 * Math.PI / 6);
+		const p = new Point(
+			lastPoint.x + length * Math.cos(angle),
+			lastPoint.y + length * Math.sin(angle)
+		);
+		points.push(p);
+		lastPoint = p;
+		if (p.x < 0 || p.x > w || p.y < 0 || p.y > h) {
+			done = true;
+		}
+	}
+	lightnings.push(new Lightning(points, randRange(1, 10), randRange(10, 200)));
 }
 
 function getSkyColor(t) {
