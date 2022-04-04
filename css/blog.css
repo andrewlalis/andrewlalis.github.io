@@ -1,8 +1,3 @@
-:root {
-    /* Color theme definitions */
-    --articleBackground: #111111;
-}
-
 .article_title {
     color: var(--textColor);
     font-weight: bold;
@@ -27,13 +22,7 @@
 .article_card a {
     display: block;
     padding: 1em;
-    background-color: var(--articleBackground);
     margin-bottom: 1.5em;
-    box-shadow: 0 1px 1px rgba(0,0,0,0.08),
-        0 2px 2px rgba(0,0,0,0.10),
-        0 4px 4px rgba(0,0,0,0.12),
-        0 8px 8px rgba(0,0,0,0.14),
-        0 16px 16px rgba(0,0,0,0.16);
 }
 
 .article_card_title {
@@ -55,23 +44,16 @@
 }
 
 article {
-    max-width: 40%;
+    max-width: 50%;
     margin-left: auto;
     margin-right: auto;
     font-size: 18px;
     line-height: 1.6em;
-    background-color: var(--articleBackground);
     padding: 1em 3em;
-
-    box-shadow: 0 1px 1px rgba(0,0,0,0.08),
-        0 2px 2px rgba(0,0,0,0.10),
-        0 4px 4px rgba(0,0,0,0.12),
-        0 8px 8px rgba(0,0,0,0.14),
-        0 16px 16px rgba(0,0,0,0.16);
 }
 
 article a {
-    color: var(--linkColorSubtle);
+    color: var(--linkColor);
 }
 
 article section + section {
