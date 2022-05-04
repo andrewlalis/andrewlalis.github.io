@@ -2,40 +2,187 @@
 <html lang="en">
 
 <head>
-	<title>andrewlalis.github.io</title>
+	<title>Andrew's Page</title>
 	<meta charset="utf-8"/>
 	<meta name="description" content="Personal site for Andrew Lalis."/>
 	<link rel="stylesheet" href="css/style.css" type="text/css"/>
-	<!-- Global site tag (gtag.js) - Google Analytics -->
-	<script async src="https://www.googletagmanager.com/gtag/js?id=G-9FCS7NBL3E"></script>
-	<script>
-		window.dataLayer = window.dataLayer || [];
-		function gtag(){dataLayer.push(arguments);}
-		gtag('js', new Date());
-		gtag('config', 'G-9FCS7NBL3E');
-	</script>
 </head>
 
 <body>
-	<canvas class="background_canvas"></canvas>
-	<div class="center_block">
-		<h1>andrewlalis.github.io</h1>
+	<header>
+		<h1>Andrew's Page</h1>
 		<p>
-			Welcome to Andrew's personal site.
+			Welcome to Andrew Lalis' personal site. Here, you'll find quick links
+			to various other accounts and services Andrew uses, as well as some
+			pages with articles and other information which might be useful.
 		</p>
-		<nav>
-			<ul class="horizontal_list">
-				<li><a href="pages/projects.html">Projects</a></li>
-				<li><a href="pages/blog.html">Dev Discussions</a></li>
-				<li><a class="link_external" href="https://github.com/andrewlalis">GitHub</a></li>
-				<li><a class="link_external" href="https://gyrobian.nl">Gyrobian</a></li>
-			</ul>
+		<nav class="card-list">
+			<a class="card card-fixed" href="pages/projects.html">
+				<h3>Projects</h3>
+				<p>A page showcasing some interesting projects I've worked on.</p>
+			</a>
+			<a class="card card-fixed" href="pages/blog.html">
+				<h3>Dev Discussions</h3>
+				<p>Some articles about various programming and non-programming topics.</p>
+			</a>
+			<a class="card card-fixed" href="https://github.com/andrewlalis">
+				<img src="img/GitHub-Mark-64px.png" alt="GitHub logo"/>
+				<h3 class="link_external" >GitHub</h3>
+				<p>My GitHub profile.</p>
+			</a>
+			<a class="card card-fixed" class="link_external" href="https://gyrobian.nl">
+				<img src="img/gyrobian-logo.png" alt="Gyrobian logo"/>
+				<h3 class="link_external">Gyrobian</h3>
+				<p>My software development and consulting firm.</p>
+			</a>
 		</nav>
-	</div>
-	<script src="js/consent.js"></script>
-	<script src="js/utils.js"></script>
-	<script src="js/little_world.js"></script>
-	<script src="js/fancy_canvas.js"></script>
+	</header>
+	<article>
+		<section>
+			<h3>About Andrew</h3>
+			<img src="img/handie_portrait_square.png" width="256" alt="Picture of Andrew"/>
+			<p>
+				Andrew is an experienced back-end software engineer that focuses on web systems and persistence mechanisms. He has worked with low-level embedded microcontrollers, all the way up to containerized cloud services and distributed databases. In his free time, he likes to work on hobby programming projects mostly in <a class="link_external" href="https://en.wikipedia.org/wiki/Java">Java</a> and <a class="link_external" href="https://dlang.org/">D</a>, some of which you can check out on the <a href="pages/projects.html">Projects page</a>. Professionally, he currently offers software consulting and contracting services to individuals and small to medium-sized businesses via <a class="link_external" href="https://www.gyrobian.nl/en">Gyrobian</a>.
+			</p>
+			<p>
+				More specifically, he has experience in the following technical categories:
+			</p>
+			<ul>
+				<li>More than 3 years in back-end PHP web development.</li>
+				<li>More than 6 years of experience in Java for web API and service development, including Spring Boot.</li>
+				<li>Oracle Certified Java SE 11 Professional (and Java SE 7 Programmer)</li>
+				<li>More than 6 years of experience with various SQL databases, such as Postgres, MySQL, MariaDB.</li>
+				<li>More than 5 years experience as a technical supervisor for multiple university level courses, involving workflow automation for hundreds of students.</li>
+				<li>More than 3 years of experience in Linux system administration, including SystemD, Bash scripting, Cron, and deployment configurations.</li>
+				<li>Over 2 years of experience in the following languages: Python, Lua, C, HTML/CSS, Javascript</li>
+			</ul>
+			<p>
+				For more information, you can <a href="#contact">request a copy of my CV by email</a>.
+			</p>
+		</section>
+		
+		<section>
+			<p>
+				Besides programming, Andrew stays active with a mix of low-intensity steady-state cardio (mostly cycling and running) and weight training. Below you can see an overview of his accomplishments in this area.
+			</p>
+			<div class="card-list">
+				<div class="card">
+					<h3>Running</h3>
+					<table class="simple-table">
+						<tbody>
+							<tr>
+								<th>Best 5k</th>
+								<td>20:29</td>
+							</tr>
+							<tr>
+								<th>Best 10k</th>
+								<td>44:39</td>
+							</tr>
+							<tr>
+								<th>Best Distance</th>
+								<td>21.49km</td>
+							</tr>
+							<tr>
+								<th>Total Distance</th>
+								<td>1025.3km</td>
+							</tr>
+						</tbody>
+					</table>
+					<small>Data from <a class="link_external" href="https://www.strava.com/athletes/28450077">Strava.com</a></small>
+				</div>
+				<div class="card">
+					<h3>Cycling</h3>
+					<table class="simple-table">
+						<tbody>
+							<tr>
+								<th>Best Distance</th>
+								<td>127.1km</td>
+							</tr>
+							<tr>
+								<th>Total Distance</th>
+								<td>627km</td>
+							</tr>
+						</tbody>
+					</table>
+					<small>Data from <a class="link_external" href="https://www.strava.com/athletes/28450077">Strava.com</a></small>
+				</div>
+				<div class="card">
+					<h3>Lifting</h3>
+					<table class="simple-table">
+						<tbody>
+							<tr>
+								<th>Barbell Bench Press</th>
+								<td>120kg / 265lbs</td>
+							</tr>
+							<tr>
+								<th>Barbell Squat</th>
+								<td>130kg / 287lbs</td>
+							</tr>
+							<tr>
+								<th>Barbell Deadlift</th>
+								<td>180kg / 396lbs</td>
+							</tr>
+							<tr>
+								<th>Barbell Jefferson Deadlift</th>
+								<td>200kg / 441lbs</td>
+							</tr>
+							<tr>
+								<th>Barbell Overhead Press</th>
+								<td>80kg / 176lbs</td>
+							</tr>
+							<tr>
+								<th>Pullups</th>
+								<td>13 reps</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+			<small>These statistics  were last updated on 4 May, 2022.</small>
+		</section>
+		<section>
+			<p>
+				Andrew also sometimes works to find solutions to technical Minecraft problems. These range from basic redstone innovations, to complex systems rooted in the fundamentals of computing science. Below you can see a short listing of some of the things he's done.
+			</p>
+			<div class="card-list">
+				<a class="card card-fixed" href="https://www.curseforge.com/minecraft/mc-mods/speed-carts">
+					<h3 class="link_external">SpeedCarts</h3>
+					<p>
+						Created a mod to increase minecart speeds, in order to make minecart travel a viable alternative to other options like the Elytra or boats.
+					</p>
+				</a>
+				<div class="card card-fixed">
+					<h3>RailSignalAPI</h3>
+					<p>
+						Built with Spring Boot and using websockets and/or plain TCP sockets, RailSignalAPI is able to interface with nearly any ingame system to build working signal systems that update in real-time. Also provides a live map for users to see updates.
+					</p>
+					<p>
+						Watch a <a class="link_external" href="https://youtu.be/eGkM-cJcYD8">demonstration on YouTube</a>, or check out the <a class="link_external" href="https://github.com/andrewlalis/RailSignalAPI">code on GitHub</a>.
+					</p>
+				</div>
+				<a class="card card-fixed" href="https://youtu.be/PqpksOT6AK4">
+					<h3 class="link_external">Intelligent Minecart Routing</h3>
+					<p>
+						A design and proof-of-concept for a distributed, stack-based minecart routing system that enables automatic routing through rail networks that are arranged as directed graphs.
+					</p>
+				</a>
+			</div>
+		</section>
+		<section>
+			<h3 id="contact">Contact</h3>
+			<p>
+				For general inquiries, you can contact me via:
+			</p>
+			<ul>
+				<li>email at andrewlalisofficial at gmail dot com (preferred)</li>
+				<li>Discord, Andrew.#3939</li>
+			</ul>
+			<p>
+				For business inquiries, please refer to the <a class="link_external" href="https://www.gyrobian.nl/en/contact">contact page at Gyrobian</a>.
+			</p>
+		</section>
+		
+	</article>
 </body>
 
 </html>

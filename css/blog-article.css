@@ -1,0 +1,72 @@
+/* Override body settings from style.css */
+body {
+    margin: 0;
+}
+
+article {
+    max-width: 60%;
+    font-size: 18px;
+    line-height: 1.6em;
+    padding: 1em 3em;
+    background-color: var(--bgDarker);
+}
+
+article header h1 {
+    color: var(--textColor);
+    font-size: 52px;
+    margin-top: 0;
+    line-height: 1.5em;
+}
+
+article a {
+    color: var(--linkColor);
+}
+
+article h3 {
+    color: var(--textColor);
+    font-size: 32px;
+}
+
+article section + section {
+    margin-top: 2em;
+}
+
+section {
+    padding-bottom: 1em;
+    border-bottom: 1px solid #999;
+}
+
+section:last-of-type {
+    padding-bottom: 0;
+    border-bottom: none;
+}
+
+article p {
+    margin-top: 1.5em;
+    margin-bottom: 1.5em;
+}
+
+article figcaption {
+    color: var(--textColorLighter);
+    font-size: 16px;
+}
+
+@media only screen and (max-width: 1200px) {
+    article {
+        max-width: 100%;
+        font-size: 32px;
+        padding: 1em 1em;
+    }
+
+    article header h1 {
+        font-size: 92px;
+    }
+
+    article h3 {
+        font-size: 60px;
+    }
+
+    article figcaption {
+        font-size: 27px;
+    }
+}

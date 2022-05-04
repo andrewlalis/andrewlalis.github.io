@@ -7,30 +7,17 @@
 	<meta name="description" content="Some explanation about Spring Boot's open-session-in-view setting and how to get around it."/>
 	<link rel="stylesheet" href="../../css/style.css" type="text/css"/>
 	<link rel="stylesheet" href="../../css/prism.css" type="text/css"/>
-	<link rel="stylesheet" href="../../css/blog.css" type="text/css"/>
-	<!-- Global site tag (gtag.js) - Google Analytics -->
-	<script async src="https://www.googletagmanager.com/gtag/js?id=G-9FCS7NBL3E"></script>
-	<script>
-		window.dataLayer = window.dataLayer || [];
-		function gtag(){dataLayer.push(arguments);}
-		gtag('js', new Date());
-		gtag('config', 'G-9FCS7NBL3E');
-	</script>
+	<link rel="stylesheet" href="../../css/blog-article.css" type="text/css"/>
 </head>
 <body>
-<header class="center_block">
-	<h1 class="article_title">Spring's Open-Session-in-View &amp; Transactions</h1>
-	<p>
-		<em>Written on <time>May 9, 2021</time>, by Andrew Lalis.</em>
-	</p>
-	<nav>
-		<ul class="horizontal_list">
-			<li><a href="../blog.html">Back to Dev Discussions</a></li>
-			<li><a href="../../index.html">Back to Homepage</a></li>
-		</ul>
-	</nav>
-</header>
+
 <article>
+	<header>
+		<h1>Spring's Open-Session-in-View &amp; Transactions</h1>
+		<p>
+			<em>Written on <time>May 9, 2021</time>, by Andrew Lalis.</em>
+		</p>
+	</header>
 	<section>
 		<p>
 			If you're reading this article, there's a good chance you've already heard about Spring's controversial <code>OpenSessionInViewFilter</code>, which allows lazy loading of entity relations during the rendering of a web view. In case you haven't, I suggest reading this excellent <a href="https://vladmihalcea.com/the-open-session-in-view-anti-pattern/">article by Vlad Mihalcea</a> which goes into much more detail on why one should avoid using the filter entirely.
@@ -86,8 +73,8 @@
 			However, the flexibility of being able to use lazy-loaded attributes the easy way more than makes up for the strict encapsulation rules, and by structuring your project around service methods as black-box operations, you'll be able to build huge projects while keeping your sanity mostly intact.
 		</p>
 	</section>
+	<a href="../blog.html">Back to Dev Discussions</a>
 </article>
-<script src="../../js/consent.js"></script>
 <script src="../../js/prism.js"></script>
 </body>
 </html>
