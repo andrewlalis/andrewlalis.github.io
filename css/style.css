@@ -95,6 +95,11 @@ img {
     width: 20%;
 }
 
+.card-square {
+    width: 250px;
+    height: 250px;
+}
+
 .card h3 {
     margin: 0;
 }
@@ -126,5 +131,9 @@ img {
 
     .card img {
         height: 64px;
+    }
+
+    .card-square {
+        height: auto;
     }
 }
