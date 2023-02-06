@@ -14,6 +14,7 @@
     /* Color theme definitions */
     --textColor: #202020;
     --textColorLigher: #474747;
+    --textColorMuted: #2c2c2c;
     --linkColor: #206b39;
     --linkColorExternal: #de0953;
     --bg: #ffffff;
@@ -22,6 +23,7 @@
 :root.dark {
     --textColor: #ececec;
     --textColorLigher: #fdfdfd;
+    --textColorMuted: #afafaf;
     --linkColor: #3fce6e;
     --linkColorExternal: #f1578d;
     --bg: #131313;

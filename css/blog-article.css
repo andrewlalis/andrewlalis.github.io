@@ -4,8 +4,10 @@ body {
 }
 
 article {
-    max-width: 60%;
-    font-size: 18px;
+    max-width: 40%;
+    margin-right: auto;
+    margin-left: auto;
+    font-size: 22px;
     line-height: 1.6em;
     padding: 1em 3em;
     background-color: var(--bgDarker);
@@ -13,7 +15,7 @@ article {
 
 article header h1 {
     color: var(--textColor);
-    font-size: 52px;
+    font-size: 60px;
     margin-top: 0;
     line-height: 1.5em;
 }
@@ -24,7 +26,7 @@ article a {
 
 article h3 {
     color: var(--textColor);
-    font-size: 32px;
+    font-size: 40px;
 }
 
 article section + section {
@@ -33,7 +35,6 @@ article section + section {
 
 section {
     padding-bottom: 1em;
-    border-bottom: 1px solid #999;
 }
 
 section:last-of-type {
@@ -46,15 +47,28 @@ article p {
     margin-bottom: 1.5em;
 }
 
-article figcaption {
-    color: var(--textColorLighter);
+article aside {
+    display: block;
+    background-color: var(--bg);
+    color: var(--textColorMuted);
+    padding-left: 1.5em;
+
+}
+
+article figure {
+    margin: 0;
     font-size: 16px;
+}
+
+article figcaption {
+    color: var(--textColorMuted);
+    font-size: 18px;
 }
 
 @media only screen and (max-width: 1200px) {
     article {
         max-width: 100%;
-        font-size: 32px;
+        font-size: 40px;
         padding: 1em 1em;
     }
 
@@ -66,7 +80,11 @@ article figcaption {
         font-size: 60px;
     }
 
+    article figure {
+        font-size: 32px;
+    }
+
     article figcaption {
-        font-size: 27px;
+        font-size: 36px;
     }
 }
